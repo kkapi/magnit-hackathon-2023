@@ -1,10 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import Loader from './Loader';
 import axios from 'axios';
-import { useState } from 'react';
+import styles from '../styles/Meta.module.css';
+import { Dispatch, SetStateAction } from 'react';
 
-const Meta = () => {
-	const [selectedFields, setselectedFields] = useState([]);
+interface MetaProps {
+	selectedFieldsId: number[];
+	setSelectedFieldsId: Dispatch<SetStateAction<number[]>>;
+}
+
+const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: ['meta'],
 		queryFn: async () => {
@@ -20,6 +25,19 @@ const Meta = () => {
 			return response.data.data.fields;
 		},
 	});
+
+	const toggleSelected = (id: number) => {
+		if (!selectedFieldsId.includes(id)) {			
+			setSelectedFieldsId(prev => [...prev, id]);
+		} else {
+			const newSelected = selectedFieldsId.filter(item => item != id);
+			setSelectedFieldsId(newSelected);
+		}
+	};
+
+	const isSelected = (id: number) => {
+		return selectedFieldsId.includes(id);
+	};
 
 	if (isPending) {
 		return <Loader />;
@@ -50,7 +68,12 @@ const Meta = () => {
 					ordinal: number;
 					visible: boolean;
 				}) => (
-					<div key={item.id} style={{ border: '1px solid blue', padding: 10 }}>
+					<div
+						key={item.id}
+						className={isSelected(item.id) ? styles.active : ''}
+						style={{ border: '1px solid blue', padding: 10, cursor: 'pointer' }}
+						onClick={() => toggleSelected(item.id)}
+					>
 						{item.ordinal} {item.name}
 					</div>
 				)

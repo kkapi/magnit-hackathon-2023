@@ -1,7 +1,10 @@
+import { useState } from 'react';
 import DataTable from './components/DataTable';
 import Meta from './components/Meta';
 
 const App = () => {
+	const [selectedFieldsId, setSelectedFieldsId] = useState<number[]>([]);
+
 	return (
 		<div
 			style={{
@@ -14,7 +17,11 @@ const App = () => {
 				backgroundColor: 'lightblue',
 			}}
 		>
-			<Meta />
+			<Meta
+				selectedFieldsId={selectedFieldsId}
+				setSelectedFieldsId={setSelectedFieldsId}
+			/>
+
 			<DataTable />
 		</div>
 	);
