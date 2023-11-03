@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import Loader from './components/Loader';
 
 const App = () => {
-	const { data } = useQuery({
+	const { isPending, isError, data, error } = useQuery({
 		queryKey: ['meta'],
 		queryFn: async () => {
 			const response = await axios.post(
@@ -18,7 +19,13 @@ const App = () => {
 		},
 	});
 
-	console.log(data);
+	if (isPending) {
+		return <Loader />;
+	}
+
+	if (isError) {
+		return <span>Error: {error.message}</span>;
+	}
 
 	return (
 		<div
@@ -41,7 +48,7 @@ const App = () => {
 						ordinal: number;
 						visible: boolean;
 					}) => (
-						<div>
+						<div key={item.id}>
 							{item.ordinal} {item.name}
 						</div>
 					)
