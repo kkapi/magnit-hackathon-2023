@@ -13,8 +13,8 @@ const App = () => {
 				gap: 30,
 				justifyContent: 'center',
 				alignItems: 'center',
-				height: '100vh',
 				backgroundColor: 'lightblue',
+				minHeight: '100vh'
 			}}
 		>
 			<Meta
