@@ -1,9 +1,10 @@
 import Loader from './Loader';
+import '../styles/DataTable.module.css'
 
 interface DataTableProps {
 	isPending: boolean;
 	isError: boolean;
-	data: unknown[] | null;
+	data: any;
 	error: Error | null;
 }
 
@@ -16,23 +17,35 @@ const DataTable = ({ isPending, isError, data, error }: DataTableProps) => {
 		return <span>Error: {error?.message}</span>;
 	}
 
+  console.log(data?.rowValues);
+
 	return (
 		<div>
 			<table>
 				<thead>
 					<tr>
-						<th>Название населенного пункта</th>
+						<th>Табличка</th>
 					</tr>
 				</thead>
 				<tbody>
 					{data ? (
-						data?.map((row: any, index: number) => (
+            data?.rowValues?.map((row: any, index: number) => <tr>
+              {/* <td>{index + 1}</td> */}
+              {
+                row.map((data: any) => <td>{data}</td>)
+              }
+            </tr>)
+						/* data?.rowValues?.map((row: any, index: number) => (
 							<tr key={index}>
-								<td>{row[0]}</td>
+								{row.map((value: any, index: number) => {
+                  <td key={index}>{value}</td>
+                })}
 							</tr>
-						))
+						)) */
 					) : (
-						<div>Выберете поле для поиска</div>
+						<tr>
+							<td>Выберете поле для поиска</td>
+						</tr>
 					)}
 				</tbody>
 			</table>

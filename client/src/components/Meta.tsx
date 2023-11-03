@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 interface MetaProps {
 	selectedFieldsId: number[];
-	setSelectedFieldsId: Dispatch<SetStateAction<number[]>>;
+	setSelectedFieldsId: Dispatch<SetStateAction<number[]>>
 }
 
 const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
