@@ -1,15 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
-import Loader from './Loader';
 import axios from 'axios';
-import styles from '../styles/Meta.module.css';
 import { Dispatch, SetStateAction } from 'react';
+import Loader from './Loader';
+import styles from '../styles/Meta.module.css';
 
-interface MetaProps {
-	selectedFieldsId: number[];
-	setSelectedFieldsId: Dispatch<SetStateAction<number[]>>;
+interface SearchFieldsProps {
+	searchFieldId: number | null;
+	setSearchFieldId: Dispatch<SetStateAction<number | null>>;
 }
 
-const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
+const SearchFields = ({
+	searchFieldId,
+	setSearchFieldId,
+}: SearchFieldsProps) => {
 	const { isPending, isError, data, error } = useQuery({
 		queryKey: ['meta'],
 		queryFn: async () => {
@@ -26,17 +29,8 @@ const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 		},
 	});
 
-	const toggleSelected = (id: number) => {
-		if (!selectedFieldsId.includes(id)) {			
-			setSelectedFieldsId(prev => [...prev, id]);
-		} else {
-			const newSelected = selectedFieldsId.filter(item => item != id);
-			setSelectedFieldsId(newSelected);
-		}
-	};
-
 	const isSelected = (id: number) => {
-		return selectedFieldsId.includes(id);
+		return id === searchFieldId;
 	};
 
 	if (isPending) {
@@ -58,7 +52,6 @@ const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 				paddingLeft: 10,
 			}}
 		>
-			
 			{data?.map(
 				(item: {
 					id: number;
@@ -70,9 +63,9 @@ const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 				}) => (
 					<div
 						key={item.id}
-						className={isSelected(item.id) ? styles.active : ''}
+                        className={isSelected(item.id) ? styles.active : ''}
 						style={{ border: '1px solid blue', padding: 10, cursor: 'pointer' }}
-						onClick={() => toggleSelected(item.id)}
+                        onClick={() => searchFieldId === item.id ? setSearchFieldId(null) : setSearchFieldId(item.id) }
 					>
 						{item.ordinal} {item.name}
 					</div>
@@ -82,4 +75,4 @@ const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 	);
 };
 
-export default Meta;
+export default SearchFields;

@@ -1,62 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import Loader from './Loader';
 
-const DataTable = () => {
-	const { isPending, isError, data, error } = useQuery({
-		queryKey: ['table'],
-		queryFn: async () => {
-			const response = await axios.post(
-				'http://localhost:8080/api/v1/olap/get-cube',
-				{
-					columnFields: [],
-					rowFields: [
-						{
-							fieldId: 15,
-							fieldType: 'REPORT_FIELD',
-						},
-					],
-					metrics: [],
-					columnsInterval: {
-						from: 0,
-						count: 24,
-					},
-					rowsInterval: {
-						from: 0,
-						count: 99,
-					},
-					filterGroup: {
-						childGroups: [],
-						filters: [],
-						invertResult: false,
-						operationType: 'AND',
-					},
-					metricFilterGroup: {
-						childGroups: [],
-						filters: [],
-						invertResult: false,
-						operationType: 'AND',
-					},
-				},
-				{
-					headers: {
-						'Content-Type': 'application/json',
-					},
-				}
-			);
-			return response.data.data.rowValues;
-		},
-	});
+interface DataTableProps {
+	isPending: boolean;
+	isError: boolean;
+	data: unknown[] | null;
+	error: Error | null;
+}
 
+const DataTable = ({ isPending, isError, data, error }: DataTableProps) => {
 	if (isPending) {
 		return <Loader />;
 	}
 
 	if (isError) {
-		return <span>Error: {error.message}</span>;
+		return <span>Error: {error?.message}</span>;
 	}
-
-	console.log(data.map((row: any) => row[0]));
 
 	return (
 		<div>
@@ -67,9 +25,15 @@ const DataTable = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{data.map((row: any) => (
-						<div>{row[0]}</div>
-					))}
+					{data ? (
+						data?.map((row: any, index: number) => (
+							<tr key={index}>
+								<td>{row[0]}</td>
+							</tr>
+						))
+					) : (
+						<div>Выберете поле для поиска</div>
+					)}
 				</tbody>
 			</table>
 		</div>
