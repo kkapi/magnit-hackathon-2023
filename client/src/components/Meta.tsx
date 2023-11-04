@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction } from 'react';
 
 interface MetaProps {
 	selectedFieldsId: number[];
-	setSelectedFieldsId: Dispatch<SetStateAction<number[]>>
+	setSelectedFieldsId: Dispatch<SetStateAction<number[]>>;
 }
 
 const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
@@ -27,7 +27,7 @@ const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 	});
 
 	const toggleSelected = (id: number) => {
-		if (!selectedFieldsId.includes(id)) {			
+		if (!selectedFieldsId.includes(id)) {
 			setSelectedFieldsId(prev => [...prev, id]);
 		} else {
 			const newSelected = selectedFieldsId.filter(item => item != id);
@@ -48,36 +48,42 @@ const Meta = ({ selectedFieldsId, setSelectedFieldsId }: MetaProps) => {
 	}
 
 	return (
-		<div
-			style={{
-				display: 'flex',
-				flexWrap: 'wrap',
-				justifyContent: 'start',
-				justifyItems: 'center',
-				gap: 8,
-				paddingLeft: 10,
-			}}
-		>
-			
-			{data?.map(
-				(item: {
-					id: number;
-					type: string;
-					name: string;
-					description: string;
-					ordinal: number;
-					visible: boolean;
-				}) => (
-					<div
-						key={item.id}
-						className={isSelected(item.id) ? styles.active : ''}
-						style={{ border: '1px solid blue', padding: 10, cursor: 'pointer' }}
-						onClick={() => toggleSelected(item.id)}
-					>
-						{item.ordinal} {item.name}
-					</div>
-				)
-			)}
+		<div>
+
+			<div
+				style={{
+					display: 'flex',
+					flexWrap: 'wrap',
+					justifyContent: 'start',
+					justifyItems: 'center',
+					gap: 8,
+					paddingLeft: 10,
+				}}
+			>
+				{data?.map(
+					(item: {
+						id: number;
+						type: string;
+						name: string;
+						description: string;
+						ordinal: number;
+						visible: boolean;
+					}) => (
+						<div
+							key={item.id}
+							className={isSelected(item.id) ? styles.active : ''}
+							style={{
+								border: '1px solid blue',
+								padding: 10,
+								cursor: 'pointer',
+							}}
+							onClick={() => toggleSelected(item.id)}
+						>
+							{item.ordinal} {item.name}
+						</div>
+					)
+				)}
+			</div>
 		</div>
 	);
 };

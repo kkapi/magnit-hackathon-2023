@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import DataTable from './components/DataTable';
 import Meta from './components/Meta';
-// import SearchFields from './components/SearchFields';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 const App = () => {
 	const [selectedFieldsId, setSelectedFieldsId] = useState<number[]>([]);
-	// const [searchFieldId, setSearchFieldId] = useState<number | null>(null);
 	
 
 	const { isPending, isError, data, error } = useQuery({
@@ -60,7 +58,6 @@ const App = () => {
 		},
 	});
 
-	console.log(data)
 
 	return (
 		<div
@@ -79,7 +76,6 @@ const App = () => {
 				setSelectedFieldsId={setSelectedFieldsId}
 			/>
 
-			{/* <SearchFields searchFieldId={searchFieldId} setSearchFieldId={setSearchFieldId}/> */}
 
 			<DataTable isPending={isPending} isError={isError} data={data} error={error} />
 		</div>

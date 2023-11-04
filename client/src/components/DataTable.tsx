@@ -29,19 +29,12 @@ const DataTable = ({ isPending, isError, data, error }: DataTableProps) => {
 				</thead>
 				<tbody>
 					{data ? (
-            data?.rowValues?.map((row: any, index: number) => <tr>
-              {/* <td>{index + 1}</td> */}
+            data?.rowValues?.map((row: any) => <tr>
               {
                 row.map((data: any) => <td>{data}</td>)
               }
             </tr>)
-						/* data?.rowValues?.map((row: any, index: number) => (
-							<tr key={index}>
-								{row.map((value: any, index: number) => {
-                  <td key={index}>{value}</td>
-                })}
-							</tr>
-						)) */
+						
 					) : (
 						<tr>
 							<td>Выберете поле для поиска</td>
